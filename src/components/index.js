@@ -1,0 +1,10 @@
+export { default as Navbar } from './Navbar/Navbar';
+export { default as Hero } from './Hero/Hero';
+export { default as Item } from './Item/Item';
+export { default as Popular } from './Popular/Popular';
+export { default as Offers } from './Offers/Offers';
+export { default as NewCollections } from './NewCollections/NewCollections';
+export { default as NewsLetter } from './NewsLetter/NewsLetter';
+export { default as Footer } from './Footer/Footer';
+export { default as Breadcrum } from './Breadcrum/Breadcrum';
+export { default as ProductDisplay } from './ProductDisplay/ProductDisplay';
