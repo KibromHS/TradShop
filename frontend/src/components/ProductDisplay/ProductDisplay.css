@@ -1,0 +1,24 @@
+.product-display {
+    display: flex;
+    margin: 0 170px;
+}
+
+.display-left {
+    display: flex;
+    gap: 17px;
+}
+
+.display-left .img-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.display-left .img-list img {
+    height: 163px;
+}
+
+.main-img {
+    width: 586px;
+    height: 700px;
+}
