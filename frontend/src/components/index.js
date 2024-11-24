@@ -8,3 +8,6 @@ export { default as NewsLetter } from './NewsLetter/NewsLetter';
 export { default as Footer } from './Footer/Footer';
 export { default as Breadcrum } from './Breadcrum/Breadcrum';
 export { default as ProductDisplay } from './ProductDisplay/ProductDisplay';
+export { default as DescriptionBox } from './DescriptionBox/DescriptionBox';
+export { default as RelatedProducts } from './RelatedProducts/RelatedProducts';
+export { default as CartItems } from './CartItems/CartItems';

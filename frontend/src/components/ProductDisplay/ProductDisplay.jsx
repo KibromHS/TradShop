@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './ProductDisplay.css';
 import images from '../../Assets/Frontend_Assets';
+import { ShopContext } from '../../context/ShopContext';
 
 const ProductDisplay = (props) => {
     const { product } = props;
+    const { addToCart } = useContext(ShopContext);
 
   return (
     <div className="product-display">
@@ -30,10 +32,10 @@ const ProductDisplay = (props) => {
             </div>
             <div className="prices">
                 <div className="price-old">
-                    ብር {product.oldPrice}
+                    ብር {product.old_price}
                 </div>
                 <div className="price-new">
-                    ብር {product.newPrice}
+                    ብር {product.new_price}
                 </div>
             </div>
             <div className="display-description">
@@ -49,9 +51,9 @@ const ProductDisplay = (props) => {
                     <div>XXL</div>
                 </div>
             </div>
-            <button>Add to Cart</button>
+            <button onClick={() => addToCart(product.id)}>Add to Cart</button>
             <p className="display-category"><span>Category : </span>Women, T-Shirt, Crop Top</p>
-            <p className="display-category"><span>Tags : </span>Modern, Latest</p>
+            <p className="display-tag"><span>Tags : </span>Modern, Latest</p>
         </div>
     </div>
   )

@@ -22,3 +22,85 @@
     width: 586px;
     height: 700px;
 }
+
+.display-right {
+    margin: 0 70px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.display-right h1 {
+    color: #3d3d3d;
+    font-size: 40px;
+    font-weight: 700;
+}
+
+.display-right-star {
+    display: flex;
+    align-items: center;
+    margin-top: 13px;
+    color: #1c1c1c;
+    gap: 5px;
+    font-size: 16px;
+}
+
+.display-right .prices {
+    display: flex;
+    margin: 40px 0;
+    gap: 30px;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.display-right .prices .price-old {
+    text-decoration: line-through;
+    color: #818181;
+}
+
+.display-right .prices .price-new {
+    color: #ff4141;
+
+}
+
+.display-size h1 {
+    margin-top: 55px;
+    color: #656565;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.display-sizes {
+    display: flex;
+    margin: 30px 0;
+    gap: 20px;
+}
+
+.display-sizes div {
+    padding: 18px 24px;
+    background-color: #fbfbfb;
+    border: 1px solid #ebebeb;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.display-right button {
+    padding: 20px 40px;
+    width: 200px;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    background-color: #ff4141;
+    margin-bottom: 40px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.display-category {
+    margin-top: 10px;
+}
+
+.display-category span {
+    font-weight: 600;
+}

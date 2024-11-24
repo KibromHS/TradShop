@@ -14,6 +14,7 @@ import kids_banner from './banner_kids.png';
 import dropDown from './dropdown_icon.png';
 import star from './star_icon.png';
 import dull_star from './star_dull_icon.png';
+import remove_icon from './cart_cross_icon.png';
 
 export default {
     logo,
@@ -31,5 +32,6 @@ export default {
     kids_banner,
     dropDown,
     star,
-    dull_star
+    dull_star,
+    remove_icon
 };
