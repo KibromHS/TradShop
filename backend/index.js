@@ -28,10 +28,6 @@ const upload = multer({ storage });
 
 app.use('/upload', express.static('./upload'));
 
-app.get('/', (req, res) => {
-    res.send('Hey fucker')
-})
-
 app.post('/upload', upload.single('product'), (req, res) => {
     res.status(200).json({
         imageUrl: `http://localhost:${port}/upload/${req.file.filename}`
