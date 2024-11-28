@@ -4,7 +4,6 @@ const multer = require('multer');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const path = require('path');
-const Product = require('./models/product');
 require('dotenv').config();
 
 const productsRouter = require('./routes/product');
@@ -15,7 +14,7 @@ const port = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cors());
 
-mongoose.connect(process.env.MONGODB_URL);
+mongoose.connect('mongodb+srv://kibromhs:Haile_5ilasse@cluster0.pho01zc.mongodb.net/trad_shop?retryWrites=true&w=majority').then(() => console.log('Database Connected')).catch((e) => console.log('DB Error', e));
 
 const storage = multer.diskStorage({
     destination: './upload',
