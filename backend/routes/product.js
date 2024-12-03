@@ -3,12 +3,12 @@ const Product = require('../models/product');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-    const product = await Product.find({});
-    res.status(200).json({ product });
+    const products = await Product.find({});
+    res.status(200).json(products);
 });
 
 router.post('/', async (req, res) => {
-    const { name, oldPrice, newPrice, category } = req.body;
+    const { name, image, oldPrice, newPrice, category } = req.body;
 
     const products = await Product.find({});
     let id;
@@ -21,15 +21,15 @@ router.post('/', async (req, res) => {
         id = 1;
     }
 
-    const product = new Product({ id, name, oldPrice, newPrice, category });
+    const product = new Product({ id, name, image, oldPrice, newPrice, category });
     await product.save();
-    res.status(201).json({ product });
+    res.status(201).json(product);
 });
 
 router.delete('/:id', async (req, res) => {
     const id = req.params.id;
     const product = await Product.findOneAndDelete({ id });
-    res.status(200).json({ product });
+    res.status(200).json(product);
 });
 
 module.exports = router;

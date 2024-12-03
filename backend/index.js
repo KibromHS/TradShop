@@ -12,12 +12,20 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(express.json());
-app.use(cors());
 
-mongoose.connect('mongodb+srv://kibromhs:Haile_5ilasse@cluster0.pho01zc.mongodb.net/trad_shop?retryWrites=true&w=majority').then(() => console.log('Database Connected')).catch((e) => console.log('DB Error', e));
+// Corrected CORS setup
+app.use(cors({
+    origin: ['http://localhost:5173', 'http://localhost:3000']
+}));
+
+app.options('*', cors()); // Allow preflight requests
+
+mongoose.connect(process.env.MONGODB_URI)
+    .then(() => console.log('Database Connected'))
+    .catch((e) => console.log('DB Error', e));
 
 const storage = multer.diskStorage({
-    destination: './upload',
+    destination: './upload/assets',
     filename: (req, file, callback) => {
         return callback(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`);
     }
@@ -25,7 +33,11 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-app.use('/upload', express.static('./upload'));
+app.use('/upload', (req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*'); // For static assets
+    res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    next();
+}, express.static('./upload/assets'));
 
 app.post('/upload', upload.single('product'), (req, res) => {
     res.status(200).json({
@@ -41,4 +53,4 @@ app.listen(port, (error) => {
     } else {
         console.log('Error', error);
     }
-})
+});

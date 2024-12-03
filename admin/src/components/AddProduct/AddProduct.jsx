@@ -40,7 +40,6 @@ const AddProduct = () => {
 
         if (response.status == 200) {
             product.image = data.imageUrl;
-            console.log(product);
             const postProductResponse = await fetch('http://localhost:5000/products', {
                 method: 'POST',
                 headers: {
@@ -57,6 +56,7 @@ const AddProduct = () => {
                 newPrice: '',
                 oldPrice: ''
             });
+            setImg(false);
         } else {
             console.log('error product', response.status, product);
         }

@@ -11,10 +11,10 @@ const Navbar = () => {
 
   return (
     <div className="navbar">
-        <div className="nav-logo">
+        <Link className="nav-logo" to='/'>
             <img src={images.logo} alt="" />
             <p>TradShop</p>
-        </div>
+        </Link>
 
         <ul className="nav-menu">
             <li onClick={() => setMenu('shop')}><Link to='/'>Shop</Link> {menu === 'shop' ? <hr /> : <></>}</li>

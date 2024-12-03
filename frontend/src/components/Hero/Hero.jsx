@@ -1,6 +1,7 @@
 import React from 'react';
 import './Hero.css';
 import images from '../../Assets/Frontend_Assets';
+import konjo from '../../Assets/Frontend_Assets/photo23.jpg';
 
 const Hero = () => {
   return (
@@ -21,7 +22,8 @@ const Hero = () => {
             </div>
         </div>
         <div className="hero-right">
-            <img src={images.hero_img} alt="" />
+            {/* <img src={images.hero_img} alt="" /> */}
+            <img src={konjo} alt="" width={400} />
         </div>
     </div>
   )
