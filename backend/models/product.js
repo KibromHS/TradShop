@@ -29,7 +29,7 @@ const ProductSchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     },
-    availble: {
+    available: {
         type: Boolean,
         default: true
     }
