@@ -7,7 +7,7 @@ import { ShopContext } from '../../context/ShopContext';
 const Navbar = () => {
 
     const [menu, setMenu] = useState('shop');
-    const {cartItems} = useContext(ShopContext);
+    const { getTotalCartItems } = useContext(ShopContext);
     const navigate = useNavigate();
 
   return (
@@ -35,7 +35,7 @@ const Navbar = () => {
             )}
             
             <Link to='/cart'><img src={images.cart_icon} alt="" /></Link>
-            <div className="couter">{Object.values(cartItems).reduce((acc, value) => acc + value, 0)}</div>
+            <div className="couter">{getTotalCartItems()}</div>
         </div>
     </div>
   )

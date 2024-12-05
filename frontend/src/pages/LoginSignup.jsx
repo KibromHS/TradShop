@@ -11,49 +11,67 @@ const LoginSignup = () => {
     email: ''
   });
   const [loading, setLoading] = useState(false);
+  const [check, setCheck] = useState(false);
 
   const login = async () => {
     setLoading(true);
-    const response = await fetch('http://locahost:5000/auth/login', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/form-data',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData),
-    });
 
-    const data = await response.json();
-
-    if (response.status === 201) {
-      localStorage.setItem('auth-token', data.token);
-      navigate('/');
-    } else {
-      alert(data.error);
+    try {
+      const response = await fetch('http://localhost:5000/auth/login', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/form-data',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email: formData.email, password: formData.password }),
+      });
+  
+      const data = await response.json();
+  
+      if (response.status === 200) {
+        localStorage.setItem('auth-token', data.token);
+        navigate('/');
+      } else {
+        alert(data.error);
+        console.log(data.error);
+      }
+      
+    } catch (e) {
+      console.log('Error', e);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
+    
   }
 
   const signup = async () => {
     setLoading(true);
-    const response = await fetch('http://locahost:5000/auth/signup', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/form-data',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData),
-    });
 
-    const data = await response.json();
-
-    if (response.status === 201) {
-      localStorage.setItem('auth-token', data.token);
-      navigate('/');
-    } else {
-      alert(data.error);
+    try {
+      const response = await fetch('http://localhost:5000/auth/signup', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/form-data',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData),
+      });
+  
+      const data = await response.json();
+  
+      if (response.status === 201) {
+        localStorage.setItem('auth-token', data.token);
+        navigate('/');
+      } else {
+        alert(data.error);
+      }
+    } catch(e) {
+      console.log('Error', e);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
+    
+    
   }
 
   const changeHandler = (e) => {
@@ -69,7 +87,7 @@ const LoginSignup = () => {
                 <input name='email' type="email" placeholder='Email Address' value={formData.email} onChange={changeHandler} />
                 <input name='password' type="password" placeholder='Password' value={formData.password} onChange={changeHandler} />
             </div>
-            <button onClick={() => state === 'Login' ? login() : signup()}>{loading ? 'Wait...' : 'Continue'}</button>
+            <button onClick={() => state === 'Login' ? login() : signup()} disabled={loading || !check}>{loading ? 'Wait...' : 'Continue'}</button>
             {state === 'Sign Up' ? (
               <p className="login">Already have an account? <span onClick={() => setState('Login')}>Login Here</span></p> 
             ): (
@@ -77,7 +95,7 @@ const LoginSignup = () => {
             )}
             
             <div className="agree">
-                <input type="checkbox" name="" id="" />
+                <input type="checkbox" name="" id="" value={check} onChange={(e) => setCheck(e.target.checked)}/>
                 <p>By continuing I agree to the terms of use and privacy policy</p>
             </div>
         </div>

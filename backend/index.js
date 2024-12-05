@@ -3,11 +3,13 @@ const multer = require('multer');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const nodemailer = require('nodemailer');
 const path = require('path');
 require('dotenv').config();
 
 const productsRouter = require('./routes/product');
 const authRouter = require('./routes/users');
+const reviewRouter = require('./routes/review');
 const Product = require('./models/product');
 const User = require('./models/user');
 
@@ -17,10 +19,11 @@ const port = process.env.PORT || 5000;
 app.use(express.json());
 
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:3000']
+    origin: ['http://localhost:5173', 'http://localhost:3000'],
+    credentials: true
 }));
 
-app.options('*', cors()); // Allow preflight requests
+app.options('*', cors());
 
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('Database Connected'))
@@ -49,6 +52,7 @@ app.post('/upload', upload.single('product'), (req, res) => {
 
 app.use('/products', productsRouter);
 app.use('/auth', authRouter);
+app.use('/reviews', reviewRouter);
 
 app.get('/new-collections', async (req, res) => {
     const products = await Product.find({});
@@ -79,24 +83,96 @@ const fetchUser = async (req, res, next) => {
 }
 
 app.post('/add-to-cart', fetchUser, async (req, res) => {
-    const { itemId, user } = req.body;
-    const userData = await User.findOne({ _id: user.id });
+    const { itemId } = req.body;
+    const userData = await User.findOne({ _id: req.user.id });
     userData.cart[itemId]++;
-    await User.findOneAndUpdate({ _id: user.id }, { cart: userData.cart });
+    await User.findOneAndUpdate({ _id: req.user.id }, { cart: userData.cart });
 });
 
 app.post('/remove-from-cart', fetchUser, async (req, res) => {
-    const { itemId, user } = req.body;
-    const userData = await User.findOne({ _id: user.id });
+    const { itemId } = req.body;
+    const userData = await User.findOne({ _id: req.user.id });
     if (userData.cart[itemId] > 0) userData.cart[itemId]--;
-    await User.findOneAndUpdate({ _id: user.id }, { cart: userData.cart });
+    await User.findOneAndUpdate({ _id: req.user.id }, { cart: userData.cart });
 });
 
 app.post('/getcart', fetchUser, async (req, res) => {
-    const { user } = req.body;
-    const userData = await User.findOne({ _id: user.id });
+    const userData = await User.findOne({ _id: req.user.id });
     res.status(200).json(userData.cart);
 });
+
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'kibromhs81@gmail.com',
+        pass: process.env.PWD
+    }
+});
+
+app.post('/send-email', (req, res) => {
+    const { email } = req.body;
+
+    const mailOptions = {
+        from: email,
+        to: 'kibromhs81@gmail.com',
+        subject: `Subscribe to newsletter`,
+        text: `${email} Subscribed to newsletter`
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error('Error sending email:', error);
+            return res.status(500).json({message: 'Failed to send email'});
+        }
+        console.log('Email sent:', info.response);
+        res.status(200).json({message: 'Email sent successfully'});
+    });
+});
+
+app.post('/create-payment-session', async (req, res) => {
+    const { amount } = req.body;
+    const tx_ref = `tx-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+    try {
+        const response = await fetch('https://api.chapa.co/v1/transaction/initialize', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${process.env.CHAPA_KEY}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "amount": amount,
+                "email": "kibromhs81@gmail.com",
+                "first_name": "firstName",
+                "last_name": "lastName",
+                "currency": "ETB", 
+                "phone_number": "0900123456",  
+                "tx_ref": tx_ref,  
+                "callback_url": "https://webhook.site/077164d6-29cb-40df-ba29-8a00e59a7e60",  
+                // "return_url": "http://localhost:3000",  
+                "customization[title]": "Payment for my favourite merchant",  
+                "customization[description]": "I love online payments",  
+                "meta[hide_receipt]": "false"
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.status == 'success') {
+            res.json({ success: true, paymentUrl: data.data.checkout_url });
+        } else {
+            console.log('Error there', data);
+            res.status(500).json({ success: false, message: 'Failed to create payment session' });
+        }
+    } catch (error) {
+        console.error("Error creating payment session:", error);
+        res.status(500).json({ success: false, message: 'Error creating payment session' });
+    }
+});
+
+
+
 
 app.listen(port, (error) => {
     if (!error) {

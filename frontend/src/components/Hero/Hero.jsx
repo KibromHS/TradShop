@@ -16,10 +16,10 @@ const Hero = () => {
                 <p>collections</p>
                 <p>for everyone</p>
             </div>
-            <div className="hero-latest-btn">
+            <a className="hero-latest-btn" href='#new-collections'>
                 <div>Latest Collection</div>
                 <img src={images.arrow_icon} alt="" />
-            </div>
+            </a>
         </div>
         <div className="hero-right">
             {/* <img src={images.hero_img} alt="" /> */}

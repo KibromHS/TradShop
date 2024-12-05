@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    const { name, image, oldPrice, newPrice, category } = req.body;
+    const { name, image, oldPrice, newPrice, category, description } = req.body;
 
     const products = await Product.find({});
     let id;
@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
         id = 1;
     }
 
-    const product = new Product({ id, name, image, oldPrice, newPrice, category });
+    const product = new Product({ id, name, image, oldPrice, newPrice, category, description });
     await product.save();
     res.status(201).json(product);
 });

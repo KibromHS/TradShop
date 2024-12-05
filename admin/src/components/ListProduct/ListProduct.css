@@ -37,4 +37,5 @@
 
 .all-products {
     overflow-y: auto;
+    width: 100%;
 }

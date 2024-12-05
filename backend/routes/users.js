@@ -25,7 +25,7 @@ router.post('/signup', async (req, res) => {
     };
 
     const token = jwt.sign(data, 'ecommerce');
-    res.status(201).json(token);
+    res.status(201).json({ token });
 });
 
 router.post('/login', async (req, res) => {
@@ -48,7 +48,7 @@ router.post('/login', async (req, res) => {
     };
 
     const token = jwt.sign(data, 'ecommerce');
-    res.status(200).json(token);
+    res.status(200).json({ token });
 });
 
 module.exports = router;

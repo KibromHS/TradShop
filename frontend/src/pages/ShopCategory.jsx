@@ -20,7 +20,7 @@ const ShopCategory = ({ category, banner }) => {
         <div className="products">
             {products.allData.map((item, index) => {
                 if (category === item.category) {
-                    return <Item key={index} id={item.id} name={item.name} image={item.image} oldPrice={item.old_price} newPrice={item.new_price} />
+                    return <Item key={index} id={item.id} name={item.name} image={item.image} oldPrice={item.oldPrice} newPrice={item.newPrice} />
                 } else {
                     return null;
                 }

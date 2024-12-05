@@ -16,11 +16,13 @@
 
 .display-left .img-list img {
     height: 163px;
+    object-fit: cover;
 }
 
 .main-img {
     width: 586px;
     height: 700px;
+    object-fit: contain;
 }
 
 .display-right {
@@ -103,4 +105,9 @@
 
 .display-category span {
     font-weight: 600;
+}
+
+.display-sizes .selected-size {
+    background-color: black;
+    color: white;
 }

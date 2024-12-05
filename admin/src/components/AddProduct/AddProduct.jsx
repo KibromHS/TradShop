@@ -9,7 +9,8 @@ const AddProduct = () => {
         image: '',
         category: 'women',
         newPrice: '',
-        oldPrice: ''
+        oldPrice: '',
+        description: ''
     });
     const [loading, setLoading] = useState(false);
 
@@ -54,7 +55,8 @@ const AddProduct = () => {
                 image: '',
                 category: 'women',
                 newPrice: '',
-                oldPrice: ''
+                oldPrice: '',
+                description: ''
             });
             setImg(false);
         } else {
@@ -82,6 +84,10 @@ const AddProduct = () => {
                 <p>Offer Price</p>
                 <input value={productDetails.newPrice} onChange={changeHandler} type="text" name="newPrice" placeholder='Type here' />
             </div>
+        </div>
+        <div className="item-fields">
+            <p>Product Description</p>
+            <input value={productDetails.description} onChange={changeHandler} type="text" name='description' placeholder='Type here' />
         </div>
         <div className="item-fields">
             <p>Product Category</p>

@@ -1,11 +1,18 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import './ProductDisplay.css';
 import images from '../../Assets/Frontend_Assets';
 import { ShopContext } from '../../context/ShopContext';
+import { useNavigate } from 'react-router-dom';
 
 const ProductDisplay = (props) => {
     const { product } = props;
     const { addToCart } = useContext(ShopContext);
+    const [size, setSize] = useState('M');
+    const navigate = useNavigate();
+
+    const addReview = () => {
+        navigate(`/rate/${product._id}`);
+    }
 
   return (
     <div className="product-display">
@@ -29,31 +36,32 @@ const ProductDisplay = (props) => {
                 <img src={images.star} alt="" />
                 <img src={images.dull_star} alt="" />
                 <p>(122)</p>
+                <button style={{marginLeft: '60px'}} onClick={addReview}>Add Review</button>
             </div>
             <div className="prices">
                 <div className="price-old">
-                    ብር {product.old_price}
+                    ብር {product.oldPrice}
                 </div>
                 <div className="price-new">
-                    ብር {product.new_price}
+                    ብር {product.newPrice}
                 </div>
             </div>
             <div className="display-description">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Commodi excepturi accusantium nostrum est quos in.
+                {product.description ?? 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Commodi excepturi accusantium nostrum est quos in.'}
             </div>
             <div className="display-size">
                 <h1>Select Size</h1>
                 <div className="display-sizes">
-                    <div>S</div>
-                    <div>M</div>
-                    <div>L</div>
-                    <div>XL</div>
-                    <div>XXL</div>
+                    <div onClick={() => setSize('S')} className={size === 'S' && 'selected-size'}>S</div>
+                    <div onClick={() => setSize('M')} className={size === 'M' && 'selected-size'}>M</div>
+                    <div onClick={() => setSize('L')} className={size === 'L' && 'selected-size'}>L</div>
+                    <div onClick={() => setSize('XL')} className={size === 'XL' && 'selected-size'}>XL</div>
+                    <div onClick={() => setSize('XXL')} className={size === 'XXL' && 'selected-size'}>XXL</div>
                 </div>
             </div>
             <button onClick={() => addToCart(product.id)}>Add to Cart</button>
-            <p className="display-category"><span>Category : </span>Women, T-Shirt, Crop Top</p>
-            <p className="display-tag"><span>Tags : </span>Modern, Latest</p>
+            {/* <p className="display-category"><span>Category : </span>Women, T-Shirt, Crop Top</p>
+            <p className="display-tag"><span>Tags : </span>Modern, Latest</p> */}
         </div>
     </div>
   )

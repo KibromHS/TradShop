@@ -1,12 +1,12 @@
 import { createContext, useState, useEffect } from "react";
-import allData from '../Assets/Frontend_Assets/all_product'
+// import allData from '../Assets/Frontend_Assets/all_product'
 
 export const ShopContext = createContext(null);
 
 const getDefaultCart = () => {
     const cart = {};
 
-    for (let i = 0; i < allData.length; i++) {
+    for (let i = 0; i < 300; i++) {
         cart[i] = 0;
     }
 
@@ -14,14 +14,14 @@ const getDefaultCart = () => {
 }
 
 const ShopContextProvider = ({ children }) => {
-    const [products, setProducts] = useState([]);
-    const [carts, setCarts] = useState(getDefaultCart());
+    const [allData, setAllData] = useState([]);
+    const [cartItems, setCartItems] = useState(getDefaultCart());
 
     useEffect(() => {
         const fetchProducts = async () => {
             const response = await fetch('http://localhost:5000/products');
             const data = await response.json();
-            setProducts(data);
+            setAllData(data);
 
             if (localStorage.getItem('auth-token')) {
                 const cartResponse = await fetch('http://localhost:5000/getcart', {
@@ -34,7 +34,7 @@ const ShopContextProvider = ({ children }) => {
                     body: ''
                 });
                 const cartData = await cartResponse.json();
-                setCarts(cartData);
+                setCartItems(cartData);
             }
         }
 
@@ -42,7 +42,7 @@ const ShopContextProvider = ({ children }) => {
     }, []);
 
 
-    const [cartItems, setCartItems] = useState(getDefaultCart());
+    // const [cartItems, setCartItems] = useState(getDefaultCart());
     
     const addToCart = async (itemId) => {
         setCartItems((prev) => ({...prev, [itemId]: prev[itemId] + 1}));
@@ -56,7 +56,7 @@ const ShopContextProvider = ({ children }) => {
                 },
                 body: JSON.stringify({ itemId }),
             });
-            const data = await response.json();
+            // const data = await response.json();
         }
     }
 
@@ -80,13 +80,23 @@ const ShopContextProvider = ({ children }) => {
         for (const i in cartItems) {
             if (cartItems[i] > 0) {
                 const itemInfo = allData.find(p => p.id === Number(i));
-                totalAmount += itemInfo.new_price * cartItems[i];
+                totalAmount += itemInfo.newPrice * cartItems[i];
             }
         }
         return totalAmount;
     }
     
-    const contextValue = { getTotalCartAmount, allData, cartItems, addToCart, removeFromCart };
+    const getTotalCartItems = () => {
+        let totalItem = 0;
+        for (const item in cartItems) {
+            if (cartItems[item] > 0) {
+                totalItem += cartItems[item];
+            }
+        }
+        return totalItem;
+    }
+
+    const contextValue = { getTotalCartItems, getTotalCartAmount, allData, cartItems, addToCart, removeFromCart };
 
     return <ShopContext.Provider value={contextValue}>
         { children }
