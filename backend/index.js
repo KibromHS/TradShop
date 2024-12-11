@@ -171,6 +171,22 @@ app.post('/create-payment-session', async (req, res) => {
     }
 });
 
+app.post('/api/validate-promo', (req, res) => {
+    const { promoCode } = req.body;
+
+    const promoCodes = [
+        { code: "SAVE10", discount: 10, type: "percentage" },
+        { code: "SAVE50", discount: 50, type: "fixed" },
+    ];      
+
+    const promo = promoCodes.find((p) => p.code === promoCode);
+
+    if (promo) {
+        res.json({ valid: true, discount: promo.discount, type: promo.type });
+    } else {
+        res.json({ valid: false, message: 'Invalid promo code' });
+    }
+});
 
 
 

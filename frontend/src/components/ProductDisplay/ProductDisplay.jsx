@@ -1,18 +1,22 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './ProductDisplay.css';
 import images from '../../Assets/Frontend_Assets';
 import { ShopContext } from '../../context/ShopContext';
 import { useNavigate } from 'react-router-dom';
+import StarDisplay from '../StarDisplay/StarDisplay';
+import StarButton from '../StarButton/StarButton';
 
 const ProductDisplay = (props) => {
-    const { product } = props;
+    const { product, reviews } = props;
     const { addToCart } = useContext(ShopContext);
     const [size, setSize] = useState('M');
     const navigate = useNavigate();
 
-    const addReview = () => {
-        navigate(`/rate/${product._id}`);
-    }
+    const calculateAverageRating = (reviews) => {
+        if (reviews.length === 0) return 0; 
+        const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+        return totalRating / reviews.length;
+    };
 
   return (
     <div className="product-display">
@@ -30,13 +34,8 @@ const ProductDisplay = (props) => {
         <div className="display-right">
             <h1>{product.name}</h1>
             <div className="display-right-star">
-                <img src={images.star} alt="" />
-                <img src={images.star} alt="" />
-                <img src={images.star} alt="" />
-                <img src={images.star} alt="" />
-                <img src={images.dull_star} alt="" />
-                <p>(122)</p>
-                <button style={{marginLeft: '60px'}} onClick={addReview}>Add Review</button>
+                <StarDisplay rating={calculateAverageRating(reviews)} />
+                <p>({reviews.length})</p>
             </div>
             <div className="prices">
                 <div className="price-old">
@@ -60,6 +59,7 @@ const ProductDisplay = (props) => {
                 </div>
             </div>
             <button onClick={() => addToCart(product.id)}>Add to Cart</button>
+            <StarButton productId={product.id} />
             {/* <p className="display-category"><span>Category : </span>Women, T-Shirt, Crop Top</p>
             <p className="display-tag"><span>Tags : </span>Modern, Latest</p> */}
         </div>

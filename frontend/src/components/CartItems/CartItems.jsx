@@ -1,12 +1,13 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import './CartItems.css';
 import { ShopContext } from '../../context/ShopContext';
 import images from '../../Assets/Frontend_Assets';
-import { useNavigate } from 'react-router-dom';
 
 const CartItems = () => {
     const { allData, cartItems, removeFromCart, getTotalCartAmount } = useContext(ShopContext);
-    const navigate = useNavigate();
+    const [promoCode, setPromoCode] = useState('');
+    const [discount, setDiscount] = useState(0);
+    const [error, setError] = useState('');
 
     const amount = `${getTotalCartAmount() + 100}`;
 
@@ -17,7 +18,7 @@ const CartItems = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ amount })
+                body: JSON.stringify({ amount: finalTotal })
             });
 
             const data = await response.json();
@@ -32,6 +33,36 @@ const CartItems = () => {
         }
         
     }
+
+    const handleApplyPromo = async () => {
+        try {
+          const response = await fetch('http://localhost:5000/api/validate-promo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ promoCode }),
+          });
+    
+          const data = await response.json();
+    
+          if (data.valid) {
+            setError('');
+            // Apply discount
+            if (data.type === 'percentage') {
+              setDiscount((amount * data.discount) / 100);
+            } else if (data.type === 'fixed') {
+              setDiscount(data.discount);
+            }
+          } else {
+            setError(data.message);
+            setDiscount(0);
+          }
+        } catch (err) {
+          console.error('Error validating promo code:', err);
+          setError('Something went wrong');
+        }
+    };
+
+    const finalTotal = amount - discount;
 
   return (
     <div className="cart-items">
@@ -79,6 +110,9 @@ const CartItems = () => {
                         <h3>Total</h3>
                         <h3>ብር {getTotalCartAmount() + 100}</h3>
                     </div>
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    {discount > 0 && <p>Discount: ብር -{discount.toFixed(2)}</p>}
+                    {discount > 0 && <h3>Final Total: ብር {finalTotal}</h3>}
                 </div>
 
                 <button onClick={checkout}>Proceed To Checkout</button>
@@ -86,8 +120,8 @@ const CartItems = () => {
             <div className="promo-code">
                 <p>If you have a promo code, Enter it here</p>
                 <div className="promo-box">
-                    <input type="text" placeholder='Promo Code' />
-                    <button>Submit</button>
+                    <input type="text" placeholder='Promo Code' value={promoCode} onChange={(e) => setPromoCode(e.target.value)} />
+                    <button onClick={handleApplyPromo}>Submit</button>
                 </div>
             </div>
         </div>
