@@ -30,6 +30,7 @@ const LoginSignup = () => {
   
       if (response.status === 200) {
         localStorage.setItem('auth-token', data.token);
+        localStorage.setItem('username', data.username);
         navigate('/');
       } else {
         alert(data.error);
@@ -61,6 +62,7 @@ const LoginSignup = () => {
   
       if (response.status === 201) {
         localStorage.setItem('auth-token', data.token);
+        localStorage.setItem('username', data.username);
         navigate('/');
       } else {
         alert(data.error);

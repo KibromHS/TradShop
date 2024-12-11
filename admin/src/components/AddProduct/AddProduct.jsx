@@ -73,25 +73,25 @@ const AddProduct = () => {
     <div className="add-product">
         <div className="item-fields">
             <p>Product Title</p>
-            <input value={productDetails.name} onChange={changeHandler} type="text" name='name' placeholder='Type here' />
+            <input value={productDetails.name} onChange={changeHandler} type="text" name='name' placeholder='Type here' required />
         </div>
         <div className="item-price">
             <div className="item-fields">
                 <p>Price</p>
-                <input value={productDetails.oldPrice} onChange={changeHandler} type="text" name="oldPrice" placeholder='Type here' />
+                <input value={productDetails.oldPrice} onChange={changeHandler} type="text" name="oldPrice" placeholder='Type here' required />
             </div>
             <div className="item-fields">
                 <p>Offer Price</p>
-                <input value={productDetails.newPrice} onChange={changeHandler} type="text" name="newPrice" placeholder='Type here' />
+                <input value={productDetails.newPrice} onChange={changeHandler} type="text" name="newPrice" placeholder='Type here' required />
             </div>
         </div>
         <div className="item-fields">
             <p>Product Description</p>
-            <input value={productDetails.description} onChange={changeHandler} type="text" name='description' placeholder='Type here' />
+            <input value={productDetails.description} onChange={changeHandler} type="text" name='description' placeholder='Type here' required />
         </div>
         <div className="item-fields">
             <p>Product Category</p>
-            <select value={productDetails.category} onChange={changeHandler} name="category" className='selector'>
+            <select value={productDetails.category} onChange={changeHandler} name="category" className='selector' required>
                 <option value="women">Women</option>
                 <option value="men">Men</option>
                 <option value="kids">Kids</option>
@@ -101,7 +101,7 @@ const AddProduct = () => {
             <label htmlFor="file-input">
                 <img src={img ? URL.createObjectURL(img) : images.uploadArea} className='thumbnail-img' alt="" />
             </label>
-            <input onChange={imgHandler} type="file" name='image' id='file-input' hidden />
+            <input onChange={imgHandler} type="file" name='image' id='file-input' hidden required />
         </div>
         <button onClick={() => addProduct()} className="add-btn">ADD</button>
     </div>

@@ -11,6 +11,10 @@ const DescriptionBox = ({ reviews, loading }) => {
         {reviews.length > 0 ? (
           reviews.map((review) => (
           <div className="description">
+            <div className='reviewer'>
+              <div>{review.username[0]}</div>
+              <p>{review.username}</p>
+            </div>
             <p>{review.text}</p>
           </div>
         ))) : (

@@ -85,3 +85,16 @@ a {
     background-color: red;
     color: white;
 }
+
+.username {
+    width: 45px;
+    height: 45px;
+    background-color: #ff4141;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 600;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

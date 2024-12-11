@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 
 const rateReviewSchema = new mongoose.Schema({
+  username: {
+    type: String,
+  },    
   productId: {
     type: String
   },

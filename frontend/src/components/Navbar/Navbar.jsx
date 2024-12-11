@@ -24,10 +24,13 @@ const Navbar = () => {
             <li onClick={() => setMenu('kids')}><Link to='/kids'>Kids</Link> {menu === 'kids' ? <hr /> : <></>}</li>
         </ul>
 
+        
+
         <div className="nav-login-cart">
             {localStorage.getItem('auth-token') ? (
                 <button onClick={() => {
                     localStorage.removeItem('auth-token');
+                    localStorage.removeItem('username');
                     navigate('/');
                 }}>Logout</button>
             ) : (
@@ -36,6 +39,11 @@ const Navbar = () => {
             
             <Link to='/cart'><img src={images.cart_icon} alt="" /></Link>
             <div className="couter">{getTotalCartItems()}</div>
+            {localStorage.getItem('username') ? (
+            <div className="username">
+                {localStorage.getItem('username')[0]}
+            </div>
+        ) : (<></>)}
         </div>
     </div>
   )

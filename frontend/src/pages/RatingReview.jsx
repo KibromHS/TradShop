@@ -16,10 +16,14 @@ const ReviewPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!localStorage.getItem('username')) {
+      alert('To give review, You have to login');
+      return;
+    }
     fetch(`http://localhost:5000/reviews`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ productId , rating, text: review }),
+      body: JSON.stringify({ username: localStorage.getItem('username'), productId , rating, text: review }),
     })
       .then((res) => res.json())
       .then(() => {
